@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| JWT Routes
 |--------------------------------------------------------------------------
 |
 | This file is where you may define all of the routes that are handled
@@ -11,10 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['namespace' => 'Auth'], function () {
+    Route::post('join', 'JWTRegisterController@register');
+    Route::post('login', 'JWTLoginController@login');
 });
 
-Auth::routes();
+Route::group(['prefix' => 'token'], function() {
+    Route::get('payload', 'JWTController@payload');
+    Route::post('refresh', 'JwtController@refresh');
+});
 
-Route::get('/home', 'HomeController@index');
+

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use Validator;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthJoinRequest;
+use App\Http\Controllers\ApiController;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller
+class JWTRegisterController extends ApiController
 {
     /*
     |--------------------------------------------------------------------------
@@ -23,13 +23,6 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -40,18 +33,16 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Handle a registration request for the application.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  AuthJoinRequest  $request
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    public function register(AuthJoinRequest $request)
     {
-        return Validator::make($data, [
-            'email' => 'required|email|max:255|unique:users',
-            'username' => 'required|max:255|unique:users',
-            'password' => 'required|min:6',
-        ]);
+        $this->create($request->all());
+
+         return $this->setStatusCode(201)->respond(['ok' => true]);
     }
 
     /**

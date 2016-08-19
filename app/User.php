@@ -26,4 +26,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function claims(array $customClaims = [])
+    {
+        return array_merge([
+            'name' => $this->name,
+            'email' => $this->email,
+            'username' => $this->username,
+        ], $customClaims);
+    }
 }
